@@ -1,0 +1,162 @@
+character.id<-key:character.name
+1;Aaron
+2;Aidan
+3;Alberto
+4;Aleph
+5;Arto
+6;Asghan
+7;Baal Cadar
+8;Baal Isidro
+9;Baal Kagan
+10;Baal Lukor
+11;Baal Namib
+12;Baal Netbek
+13;Baal Orun
+14;Baal Parvez
+15;Baal Taran
+16;Baal Tondral
+17;Baal Tyon
+18;Balor
+19;Baloro
+20;Bandzior
+21;Bartholo
+22;Bezimienny
+23;Blizna
+24;Bloodwyn
+25;Brandick
+26;Bullit
+27;Buster
+28;Butch
+29;Caine
+30;Cavalorn
+31;Cień
+32;Cipher
+33;Cor Angar
+34;Cor Kalom
+35;Cord
+36;Corristo
+37;Cronos
+38;Damarok
+39;Darrion
+40;Demon ognia
+41;Dexter
+42;Diego
+43;Drago
+44;Drake
+45;Drax
+46;Dusty
+47;Dziwka
+48;Fisk
+49;Fletcher
+50;Fortuno
+51;Garp
+52;Ghorim
+53;Gilbert
+54;Glen
+55;Gomez
+56;Gor Boba
+57;Gor Hanis
+58;Gor Na Bar
+59;Gor Na Drak
+60;Gor Na Kosh
+61;Gor Na Ran
+62;Gor Na Toth
+63;Gor Na Vid
+64;Gorn
+65;Graham
+66;Grash-Varrag-Arushat
+67;Gravo
+68;Grim
+69;Grimes
+70;Guy
+71;Harlok
+72;Herek
+73;Homer
+74;Horacy
+75;Huno
+76;Ian
+77;Inne
+78;Jacko
+79;Jarvis
+80;Jeremiasz
+81;Jesse
+82;Joru
+83;Kharim
+84;Killian
+85;Kirgo
+86;Klin
+87;Kopacz
+88;Kret
+89;Kruk
+90;Krzykacz
+91;Kyle
+92;Lares
+93;Lee
+94;Lester
+95;Lewus
+96;Melvin
+97;Milten
+98;Mordrag
+99;Najemnik
+100;Nefarius
+101;Nowicjusz
+102;Nyras
+103;Okyl
+104;Ork
+105;Orry
+106;Pacho
+107;Pock
+108;Ratford
+109;Renyu
+110;Riordian
+111;Rodriguez
+112;Roscoe
+113;Rozmowa
+114;Rufus
+115;Ryżowy Książę
+116;Rączka
+117;Santino
+118;Saturas
+119;Scatty
+120;Senyan
+121;Sharky
+122;Shrat
+123;Siekacz
+124;Silas
+125;Skip
+126;Skorpion
+127;Snaf
+128;Snipes
+129;Steve
+130;Stone
+131;Strażnik
+132;Strażnik Kaloma
+133;Strażnik bramy
+134;Strażnik mostu
+135;Strażnik świątynny
+136;Swiney
+137;Szakal
+138;Szalony Cor Kalom
+139;Szkodnik
+140;Talas
+141;Tarrok
+142;Thorus
+143;Torlof
+144;Torrez
+145;Ulbert
+146;Ur-Shak
+147;Varrag-Hashor
+148;Varrag-Kasorg
+149;Varrag-Ruuushk
+150;Varrag-Unhilqt
+151;Viran
+152;Wilk
+153;Wrzód
+154;Wykidajło
+155;Wąż
+156;Xardas
+157;Y'Berion
+158;Zbieracz
+159;Zły
+160;Świstak
+161;Świątynny strażnik
