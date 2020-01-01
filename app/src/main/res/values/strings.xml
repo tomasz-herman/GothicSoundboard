@@ -18,4 +18,5 @@
     <string name="directory">Directory</string>
     <string name="choose_where_is_directory">Chose directory where your resources files are located</string>
     <string name="resources_directory">Resources directory</string>
+    <string name="favorites">Favorites</string>
 </resources>
