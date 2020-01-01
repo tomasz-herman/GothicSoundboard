@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.SearchResultActivity"></activity>
+        <activity android:name=".activities.SettingsActivity"></activity>
+        <activity android:name=".activities.SearchResultActivity" />
         <activity android:name=".activities.SearchActivity" />
         <activity android:name=".activities.ExploreActivity" />
         <activity android:name=".activities.MainActivity">

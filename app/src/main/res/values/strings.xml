@@ -13,4 +13,9 @@
     <string name="aaron">Aaron</string>
     <string name="hey_you">Hey you!</string>
     <string name="is_favorite">is favorite</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="directory">Directory</string>
+    <string name="choose_where_is_directory">Chose directory where your resources files are located</string>
+    <string name="resources_directory">Resources directory</string>
 </resources>

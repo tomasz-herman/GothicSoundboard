@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/directory">
+        <Preference
+            android:title="@string/resources_directory"
+            android:summary="@string/choose_where_is_directory"
+            android:key="directory"
+            android:defaultValue="null"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>

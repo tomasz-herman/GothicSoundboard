@@ -1,9 +1,12 @@
 package com.therman.gothicsoundboard.activities;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 
 import com.therman.gothicsoundboard.R;
@@ -27,5 +30,25 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             startActivity(intent);
         });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.iSettings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case R.id.iAbout:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
