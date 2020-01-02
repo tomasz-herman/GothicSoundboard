@@ -65,6 +65,7 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder
                 FileDescriptor fd = inputStream.getFD();
                 player.setDataSource(fd);
                 player.prepare();
+                inputStream.close();
                 player.start();
             } catch (IOException e) {
                 e.printStackTrace();
