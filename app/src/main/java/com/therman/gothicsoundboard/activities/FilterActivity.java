@@ -16,7 +16,7 @@ import com.therman.gothicsoundboard.database.Character;
 
 import java.util.stream.Collectors;
 
-public class SearchActivity extends AppCompatActivity {
+public class FilterActivity extends AppCompatActivity {
 
     Button btnSearch;
     AutoCompleteTextView etCharacterName, etActorName;
@@ -37,7 +37,7 @@ public class SearchActivity extends AppCompatActivity {
         etActorName.setThreshold(1);
         etCharacterName.setThreshold(1);
         btnSearch.setOnClickListener(v -> {
-            Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
+            Intent intent = new Intent(FilterActivity.this, SearchResultActivity.class);
             intent.putExtra("actor", etActorName.getText() != null ? etActorName.getText().toString() : "");
             intent.putExtra("character", etCharacterName.getText() != null ? etCharacterName.getText().toString() : "");
             intent.putExtra("dialog", etDialogText.getText() != null ? etDialogText.getText().toString() : "");

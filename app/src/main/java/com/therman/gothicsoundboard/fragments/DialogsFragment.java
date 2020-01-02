@@ -1,6 +1,7 @@
 package com.therman.gothicsoundboard.fragments;
 
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ public class DialogsFragment extends Fragment {
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
     View view;
+    MediaPlayer mediaPlayer;
 
     public DialogsFragment() {
         // Required empty public constructor
@@ -48,7 +51,8 @@ public class DialogsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new DialogAdapter(getActivity(), GothicSoundboard.database.getDialogs().collect(Collectors.toCollection(ArrayList::new)));
+        mediaPlayer = new MediaPlayer();
+        adapter = new DialogAdapter(getActivity(), GothicSoundboard.database.getDialogs().collect(Collectors.toCollection(ArrayList::new)), mediaPlayer);
         recyclerView.setAdapter(adapter);
     }
 

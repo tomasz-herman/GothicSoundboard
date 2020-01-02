@@ -2,10 +2,15 @@ package com.therman.gothicsoundboard.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,19 +21,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.therman.gothicsoundboard.R;
 import com.therman.gothicsoundboard.database.Dialog;
 
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
-public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder> {
+public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder> implements Filterable {
 
+    private ArrayList<Dialog> allDialogs;
     private ArrayList<Dialog> dialogs;
     private Context context;
+    private MediaPlayer mediaPlayer;
 
-    public DialogAdapter(Context context, ArrayList<Dialog> dialogs) {
+    public DialogAdapter(Context context, ArrayList<Dialog> dialogs, MediaPlayer mediaPlayer) {
         this.dialogs = dialogs;
+        this.allDialogs = new ArrayList<>(dialogs);
         this.context = context;
+        this.mediaPlayer = mediaPlayer;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         TextView tvDialogFrom, tvDialogText;
         ImageView ivFavorite;
         public ViewHolder(@NonNull View itemView) {
@@ -36,7 +51,23 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder
             tvDialogFrom = itemView.findViewById(R.id.tvDialogFrom);
             tvDialogText = itemView.findViewById(R.id.tvDialogText);
             ivFavorite = itemView.findViewById(R.id.ivFavorite);
-            itemView.setOnClickListener(v -> Toast.makeText(context, "Playing: " + ((Dialog)v.getTag()).getFile(), Toast.LENGTH_SHORT).show());
+            itemView.setOnClickListener(v -> {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                try {
+                    File filePath = new File(preferences.getString("directory", "") + File.separator + ((Dialog)v.getTag()).getFile());
+                    if (!filePath.exists()){
+                        Toast.makeText(context, "Missing file: " + ((Dialog) v.getTag()).getFile(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    FileDescriptor fd = new FileInputStream(filePath).getFD();
+                    mediaPlayer.setDataSource(fd);
+                    mediaPlayer.prepare();
+                    mediaPlayer.start();
+                    Toast.makeText(context, "Playing: " + ((Dialog)v.getTag()).getFile(), Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
             ivFavorite.setOnClickListener(v -> {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
                 if(prefs.contains((String)v.getTag())){
@@ -48,6 +79,11 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder
                 }
             });
         }
+    }
+    public void replaceData(ArrayList<Dialog> dialogs){
+        this.dialogs = dialogs;
+        this.allDialogs = new ArrayList<>(dialogs);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -72,5 +108,36 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return dialogs.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                ArrayList<Dialog> filteredDialogs;
+                if(constraint == null || constraint.length() == 0)
+                    filteredDialogs = new ArrayList<>(allDialogs);
+                else {
+                    String pattern = constraint.toString().toLowerCase().trim();
+                    filteredDialogs = allDialogs.stream().filter(
+                            dialog -> dialog.getText().toLowerCase().contains(pattern)
+                                            || dialog.getFrom().toString().toLowerCase().contains(pattern)
+                                            || dialog.getTo().toString().toLowerCase().contains(pattern)
+                                            || dialog.getActor().toString().toLowerCase().contains(pattern)
+                    ).collect(Collectors.toCollection(ArrayList::new));
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredDialogs;
+                return filterResults;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                dialogs = (ArrayList<Dialog>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }
