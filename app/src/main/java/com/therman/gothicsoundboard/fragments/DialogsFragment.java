@@ -29,7 +29,6 @@ public class DialogsFragment extends Fragment {
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
     View view;
-    MediaPlayer mediaPlayer;
 
     public DialogsFragment() {
         // Required empty public constructor
@@ -51,8 +50,7 @@ public class DialogsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        mediaPlayer = new MediaPlayer();
-        adapter = new DialogAdapter(getActivity(), GothicSoundboard.database.getDialogs().collect(Collectors.toCollection(ArrayList::new)), mediaPlayer);
+        adapter = new DialogAdapter(getActivity(), GothicSoundboard.database.getDialogs().collect(Collectors.toCollection(ArrayList::new)));
         recyclerView.setAdapter(adapter);
     }
 

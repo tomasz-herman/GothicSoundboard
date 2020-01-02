@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Filterable;
 
 import com.therman.gothicsoundboard.GothicSoundboard;
@@ -50,6 +51,7 @@ public class ExploreActivity extends AppCompatActivity implements CharacterAdapt
         getMenuInflater().inflate(R.menu.menu_search, menu);
         MenuItem iSearch = menu.findItem(R.id.iSearch);
         SearchView searchView = (SearchView) iSearch.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

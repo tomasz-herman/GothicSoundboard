@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -33,13 +31,11 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder
     private ArrayList<Dialog> allDialogs;
     private ArrayList<Dialog> dialogs;
     private Context context;
-    private MediaPlayer mediaPlayer;
 
-    public DialogAdapter(Context context, ArrayList<Dialog> dialogs, MediaPlayer mediaPlayer) {
+    public DialogAdapter(Context context, ArrayList<Dialog> dialogs) {
         this.dialogs = dialogs;
         this.allDialogs = new ArrayList<>(dialogs);
         this.context = context;
-        this.mediaPlayer = mediaPlayer;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -51,33 +47,39 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder
             tvDialogFrom = itemView.findViewById(R.id.tvDialogFrom);
             tvDialogText = itemView.findViewById(R.id.tvDialogText);
             ivFavorite = itemView.findViewById(R.id.ivFavorite);
-            itemView.setOnClickListener(v -> {
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                try {
-                    File filePath = new File(preferences.getString("directory", "") + File.separator + ((Dialog)v.getTag()).getFile());
-                    if (!filePath.exists()){
-                        Toast.makeText(context, "Missing file: " + ((Dialog) v.getTag()).getFile(), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    FileDescriptor fd = new FileInputStream(filePath).getFD();
-                    mediaPlayer.setDataSource(fd);
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-                    Toast.makeText(context, "Playing: " + ((Dialog)v.getTag()).getFile(), Toast.LENGTH_SHORT).show();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            itemView.setOnClickListener(this::playDialog);
+            ivFavorite.setOnClickListener(this::setFavorite);
+        }
+
+        private void playDialog(View v) {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            try {
+                File filePath = new File(preferences.getString("directory", "") + File.separator + ((Dialog) v.getTag()).getFile());
+                if (!filePath.exists()) {
+                    Toast.makeText(context, "Missing file: " + ((Dialog) v.getTag()).getFile(), Toast.LENGTH_SHORT).show();
+                    return;
                 }
-            });
-            ivFavorite.setOnClickListener(v -> {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                if(prefs.contains((String)v.getTag())){
-                    ivFavorite.setImageResource(R.drawable.unfavorite);
-                    prefs.edit().remove((String)v.getTag()).apply();
-                } else {
-                    ivFavorite.setImageResource(R.drawable.favorite);
-                    prefs.edit().putBoolean((String)v.getTag(), true).apply();
-                }
-            });
+                final MediaPlayer player = new MediaPlayer();
+                player.setOnCompletionListener(MediaPlayer::release);
+                FileInputStream inputStream = new FileInputStream(filePath);
+                FileDescriptor fd = inputStream.getFD();
+                player.setDataSource(fd);
+                player.prepare();
+                player.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void setFavorite(View v) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            if (prefs.contains((String) v.getTag())) {
+                ivFavorite.setImageResource(R.drawable.unfavorite);
+                prefs.edit().remove((String) v.getTag()).apply();
+            } else {
+                ivFavorite.setImageResource(R.drawable.favorite);
+                prefs.edit().putBoolean((String) v.getTag(), true).apply();
+            }
         }
     }
     public void replaceData(ArrayList<Dialog> dialogs){
