@@ -25,25 +25,23 @@ public class ExploreActivity extends AppCompatActivity implements CharacterAdapt
 
     RecyclerView rvDialogs;
     FragmentManager fragmentManager;
+    static int lastCharacterId = 0;
+    static boolean shownDialogsFragment = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore);
-        rvDialogs = findViewById(R.id.rvDialogs);
         fragmentManager = getSupportFragmentManager();
-        if(findViewById(R.id.layout_portrait) != null){
-            fragmentManager.beginTransaction()
-                    .show(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragCharacters)))
-                    .hide(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragDialogs)))
-                    .commit();
-        }
-        if(findViewById(R.id.layout_landscape) != null){
-            fragmentManager.beginTransaction()
-                    .show(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragCharacters)))
-                    .show(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragDialogs)))
-                    .commit();
-        }
+        rvDialogs = findViewById(R.id.rvDialogs);
+        adjustFragments();
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        filterDialogs(lastCharacterId);
     }
 
     @Override
@@ -69,18 +67,63 @@ public class ExploreActivity extends AppCompatActivity implements CharacterAdapt
 
     @Override
     public void onItemClicked(int id) {
-        ArrayList<Dialog> dialogs;
-        if(id == 0)
-            dialogs = GothicSoundboard.database.getDialogs().collect(Collectors.toCollection(ArrayList::new));
-        else
-            dialogs = GothicSoundboard.database.getDialogs().filter(dialog -> dialog.getWho().getId() == id).collect(Collectors.toCollection(ArrayList::new));
-        ((DialogAdapter) Objects.requireNonNull(rvDialogs.getAdapter())).replaceData(dialogs);
-        if(findViewById(R.id.layout_portrait) != null){
-            fragmentManager.beginTransaction()
-                    .hide(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragCharacters)))
-                    .show(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragDialogs)))
-                    .addToBackStack(null)
-                    .commit();
+        filterDialogs(lastCharacterId = id);
+        shownDialogsFragment = true;
+        if(findViewById(R.id.layout_portrait) != null) hideCharactersShowDialogs();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(isLandscapeMode() || !shownDialogsFragment){
+            lastCharacterId = 0;
+            shownDialogsFragment = false;
+            super.onBackPressed();
+        } else {
+            shownDialogsFragment = false;
+            showCharactersHideDialogs();
         }
+    }
+
+    private void filterDialogs(int id){
+        ArrayList<Dialog> dialogs = id == 0 ?
+                GothicSoundboard.database.getDialogs().collect(Collectors.toCollection(ArrayList::new)) :
+                GothicSoundboard.database.getDialogs().filter(dialog -> dialog.getWho().getId() == id).collect(Collectors.toCollection(ArrayList::new));
+        ((DialogAdapter) Objects.requireNonNull(rvDialogs.getAdapter())).replaceData(dialogs);
+    }
+
+    private void adjustFragments(){
+        if(isPortraitMode())
+            if (shownDialogsFragment) hideCharactersShowDialogs();
+            else showCharactersHideDialogs();
+        if(isLandscapeMode()) showCharactersAndDialogs();
+    }
+
+    private boolean isPortraitMode(){
+        return findViewById(R.id.layout_portrait) != null;
+    }
+
+    private boolean isLandscapeMode(){
+        return findViewById(R.id.layout_landscape) != null;
+    }
+
+    private void hideCharactersShowDialogs(){
+        fragmentManager.beginTransaction()
+                .hide(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragCharacters)))
+                .show(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragDialogs)))
+                .commit();
+    }
+
+    private void showCharactersHideDialogs(){
+        fragmentManager.beginTransaction()
+                .show(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragCharacters)))
+                .hide(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragDialogs)))
+                .commit();
+    }
+
+    private void showCharactersAndDialogs(){
+        fragmentManager.beginTransaction()
+                .show(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragCharacters)))
+                .show(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragDialogs)))
+                .commit();
     }
 }

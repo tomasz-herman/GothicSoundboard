@@ -50,7 +50,7 @@ public class DialogsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new DialogAdapter(getActivity(), GothicSoundboard.database.getDialogs().collect(Collectors.toCollection(ArrayList::new)));
+        adapter = new DialogAdapter(getActivity(), new ArrayList<>());
         recyclerView.setAdapter(adapter);
     }
 
