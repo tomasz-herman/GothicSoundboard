@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder
     private ArrayList<Dialog> allDialogs;
     private ArrayList<Dialog> dialogs;
     private Context context;
+    private MediaPlayer player = new MediaPlayer();
 
     public DialogAdapter(Context context, ArrayList<Dialog> dialogs) {
         this.dialogs = dialogs;
@@ -64,14 +66,20 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder
                     Toast.makeText(context, "Missing file: " + ((Dialog) v.getTag()).getFile(), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                final MediaPlayer player = new MediaPlayer();
+                try {
+                    if(player.isPlaying()) player.release();
+                } catch (IllegalStateException e){
+                    e.printStackTrace();
+                }
+                Log.d("Playing:", ((Dialog) v.getTag()).getFile());
+                player = new MediaPlayer();
                 player.setOnCompletionListener(MediaPlayer::release);
                 FileInputStream inputStream = new FileInputStream(filePath);
                 FileDescriptor fd = inputStream.getFD();
                 player.setDataSource(fd);
-                player.prepare();
+                player.prepareAsync();
+                player.setOnPreparedListener(MediaPlayer::start);
                 inputStream.close();
-                player.start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
