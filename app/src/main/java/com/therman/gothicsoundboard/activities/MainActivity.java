@@ -46,9 +46,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            checkForPermission();
-        }
+        checkForPermission();
     }
 
     @Override

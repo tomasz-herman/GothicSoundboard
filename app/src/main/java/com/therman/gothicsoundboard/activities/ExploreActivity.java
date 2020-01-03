@@ -26,6 +26,7 @@ public class ExploreActivity extends AppCompatActivity implements CharacterAdapt
 
     RecyclerView rvDialogs;
     FragmentManager fragmentManager;
+    MenuItem iSearch;
     static int lastCharacterId = 0;
     static boolean shownDialogsFragment = false;
 
@@ -48,7 +49,8 @@ public class ExploreActivity extends AppCompatActivity implements CharacterAdapt
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search, menu);
-        MenuItem iSearch = menu.findItem(R.id.iSearch);
+        iSearch = menu.findItem(R.id.iSearch);
+        if(isPortraitMode()) iSearch.setVisible(false);
         SearchView searchView = (SearchView) iSearch.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -113,6 +115,8 @@ public class ExploreActivity extends AppCompatActivity implements CharacterAdapt
                 .show(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragDialogs)))
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
+        if(iSearch != null) iSearch.setVisible(true);
+
     }
 
     private void showCharactersHideDialogs(){
@@ -121,6 +125,8 @@ public class ExploreActivity extends AppCompatActivity implements CharacterAdapt
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .hide(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragDialogs)))
                 .commit();
+        if(iSearch != null) iSearch.setVisible(false);
+
     }
 
     private void showCharactersAndDialogs(){
@@ -128,5 +134,6 @@ public class ExploreActivity extends AppCompatActivity implements CharacterAdapt
                 .show(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragCharacters)))
                 .show(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragDialogs)))
                 .commit();
+        if(iSearch != null) iSearch.setVisible(true);
     }
 }

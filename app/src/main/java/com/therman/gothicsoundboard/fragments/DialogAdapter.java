@@ -36,7 +36,7 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder
     private ArrayList<Dialog> allDialogs;
     private ArrayList<Dialog> dialogs;
     private Context context;
-    private MediaPlayer player = new MediaPlayer();
+    private MediaPlayer player;
 
     public DialogAdapter(Context context, ArrayList<Dialog> dialogs) {
         this.dialogs = dialogs;
@@ -67,12 +67,10 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder
                     return;
                 }
                 try {
-                    if(player.isPlaying()) player.release();
-                } catch (IllegalStateException e){
-                    e.printStackTrace();
-                }
-                Log.d("Playing:", ((Dialog) v.getTag()).getFile());
+                    if(player != null && player.isPlaying()) player.release();
+                } catch (IllegalStateException ignored){ /*player is in released state*/ }
                 player = new MediaPlayer();
+                Log.d("Playing:", ((Dialog) v.getTag()).getFile());
                 player.setOnCompletionListener(MediaPlayer::release);
                 FileInputStream inputStream = new FileInputStream(filePath);
                 FileDescriptor fd = inputStream.getFD();
