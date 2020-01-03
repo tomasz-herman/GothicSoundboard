@@ -3,6 +3,7 @@ package com.therman.gothicsoundboard.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -110,12 +111,14 @@ public class ExploreActivity extends AppCompatActivity implements CharacterAdapt
         fragmentManager.beginTransaction()
                 .hide(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragCharacters)))
                 .show(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragDialogs)))
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
     }
 
     private void showCharactersHideDialogs(){
         fragmentManager.beginTransaction()
                 .show(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragCharacters)))
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .hide(Objects.requireNonNull(fragmentManager.findFragmentById(R.id.fragDialogs)))
                 .commit();
     }

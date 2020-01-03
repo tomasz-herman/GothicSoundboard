@@ -15,12 +15,12 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginRight="20dp"
+        android:height="60sp"
         android:background="@color/colorPrimary"
         android:text="@string/explore"
         android:textColor="@color/colorIcons"
         android:textSize="24sp"
-        android:height="60sp"
-        android:textStyle="bold" />
+        android:textStyle="normal" />
 
     <Button
         android:id="@+id/btnSearchActivity"
@@ -29,12 +29,12 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginRight="20dp"
+        android:height="60sp"
         android:background="@color/colorPrimary"
         android:text="@string/filter"
         android:textColor="@color/colorIcons"
         android:textSize="24sp"
-        android:height="60sp"
-        android:textStyle="bold" />
+        android:textStyle="normal" />
 
     <Button
         android:id="@+id/btnSmalltalk"
@@ -42,13 +42,13 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="15dp"
-        android:height="60sp"
         android:layout_marginRight="20dp"
+        android:height="60sp"
         android:background="@color/colorPrimary"
         android:text="@string/small_talk"
         android:textColor="@color/colorIcons"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="normal" />
 
     <Button
         android:id="@+id/btnFavorites"
@@ -62,5 +62,5 @@
         android:text="@string/favorites"
         android:textColor="@color/colorIcons"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="normal" />
 </LinearLayout>

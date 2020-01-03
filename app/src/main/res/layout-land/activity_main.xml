@@ -25,8 +25,7 @@
             android:background="@color/colorPrimary"
             android:text="@string/explore"
             android:textColor="@color/colorIcons"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/btnSearchActivity"
@@ -39,8 +38,7 @@
             android:background="@color/colorPrimary"
             android:text="@string/filter"
             android:textColor="@color/colorIcons"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="24sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -60,8 +58,7 @@
             android:background="@color/colorPrimary"
             android:text="@string/small_talk"
             android:textColor="@color/colorIcons"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/btnFavorites"
@@ -74,8 +71,7 @@
             android:background="@color/colorPrimary"
             android:text="@string/favorites"
             android:textColor="@color/colorIcons"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="24sp" />
     </LinearLayout>
 
 </LinearLayout>

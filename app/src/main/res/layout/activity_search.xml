@@ -64,7 +64,6 @@
         android:background="@color/colorPrimary"
         android:text="@string/filter"
         android:textColor="@color/colorIcons"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textSize="24sp" />
 
 </LinearLayout>
