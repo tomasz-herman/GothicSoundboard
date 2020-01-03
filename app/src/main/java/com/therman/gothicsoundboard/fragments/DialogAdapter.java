@@ -1,8 +1,11 @@
 package com.therman.gothicsoundboard.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +26,7 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -48,6 +52,7 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder
             tvDialogText = itemView.findViewById(R.id.tvDialogText);
             ivFavorite = itemView.findViewById(R.id.ivFavorite);
             itemView.setOnClickListener(this::playDialog);
+            itemView.setOnLongClickListener(this::shareDialog);
             ivFavorite.setOnClickListener(this::setFavorite);
         }
 
@@ -81,6 +86,22 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder
                 ivFavorite.setImageResource(R.drawable.favorite);
                 prefs.edit().putBoolean((String) v.getTag(), true).apply();
             }
+        }
+
+        private boolean shareDialog(View v) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            File file = new File(preferences.getString("directory", "") + File.separator + ((Dialog) v.getTag()).getFile());
+            if (!file.exists()) {
+                Toast.makeText(context, "Missing file: " + ((Dialog) v.getTag()).getFile(), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file.getAbsolutePath()));
+            shareIntent.setType(URLConnection.guessContentTypeFromName(file.getName()));
+            context.startActivity(Intent.createChooser(shareIntent, "Share a file: " + ((Dialog) v.getTag()).getFile()));
+            return true;
         }
     }
     public void replaceData(ArrayList<Dialog> dialogs){
