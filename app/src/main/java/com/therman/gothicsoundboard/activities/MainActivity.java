@@ -19,7 +19,7 @@ import com.therman.gothicsoundboard.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnExplore, btnSearch, btnFavorites;
+    Button btnExplore, btnSearch, btnFavorites, btnSmalltalk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         btnExplore = findViewById(R.id.btnExploreActivity);
         btnSearch = findViewById(R.id.btnSearchActivity);
         btnFavorites = findViewById(R.id.btnFavorites);
+        btnSmalltalk = findViewById(R.id.btnSmalltalk);
         btnExplore.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ExploreActivity.class);
             startActivity(intent);
@@ -39,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
         btnFavorites.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SearchResultActivity.class);
             intent.putExtra("favorites", true);
+            startActivity(intent);
+        });
+        btnSmalltalk.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SmalltalkActivity.class);
             startActivity(intent);
         });
     }
