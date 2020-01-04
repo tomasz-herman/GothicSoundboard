@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.therman.gothicsoundboard">
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".GothicSoundboard"
         android:allowBackup="true"
@@ -10,7 +12,8 @@
         android:roundIcon="@mipmap/ic_gothic_soundboard_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.SettingsActivity"></activity>
+        <activity android:name=".activities.SmalltalkActivity"></activity>
+        <activity android:name=".activities.SettingsActivity" />
         <activity android:name=".activities.SearchResultActivity" />
         <activity android:name=".activities.FilterActivity" />
         <activity android:name=".activities.ExploreActivity" />

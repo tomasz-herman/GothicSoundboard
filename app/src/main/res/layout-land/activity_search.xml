@@ -75,7 +75,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
             android:height="60sp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button_style"
             android:text="@string/filter"
             android:textColor="@color/colorIcons"
             android:textSize="24sp" />

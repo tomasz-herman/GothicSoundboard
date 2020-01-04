@@ -2,15 +2,11 @@ package com.therman.gothicsoundboard.utils;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.content.ContentUris;
 import android.content.Context;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 
 import androidx.annotation.Nullable;
 
@@ -19,7 +15,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
 public class FileUtils {
-    static String TAG="TAG";
+
     private static final String PRIMARY_VOLUME_NAME = "primary";
 
     @Nullable
@@ -44,9 +40,7 @@ public class FileUtils {
     }
 
 
-    @SuppressLint("ObsoleteSdkInt")
     private static String getVolumePath(final String volumeId, Context context) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return null;
         try {
             StorageManager mStorageManager =
                     (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);

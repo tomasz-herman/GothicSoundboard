@@ -22,7 +22,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:height="60sp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button_style"
             android:text="@string/explore"
             android:textColor="@color/colorIcons"
             android:textSize="24sp" />
@@ -35,7 +35,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
             android:height="60sp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button_style"
             android:text="@string/filter"
             android:textColor="@color/colorIcons"
             android:textSize="24sp" />
@@ -55,7 +55,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:height="60sp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button_style"
             android:text="@string/small_talk"
             android:textColor="@color/colorIcons"
             android:textSize="24sp" />
@@ -68,7 +68,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
             android:height="60sp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button_style"
             android:text="@string/favorites"
             android:textColor="@color/colorIcons"
             android:textSize="24sp" />
