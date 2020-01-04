@@ -46,6 +46,7 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_CANCELED) return;
         switch(requestCode) {
             case 9999:
                 Uri uri = data.getData();

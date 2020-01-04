@@ -50,7 +50,7 @@ public class ExploreActivity extends AppCompatActivity implements CharacterAdapt
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search, menu);
         iSearch = menu.findItem(R.id.iSearch);
-        if(isPortraitMode()) iSearch.setVisible(false);
+        if(isPortraitMode() && !shownDialogsFragment) iSearch.setVisible(false);
         SearchView searchView = (SearchView) iSearch.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
