@@ -9,4 +9,25 @@
             android:defaultValue="null"
             />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/small_talk">
+        <ListPreference
+            android:defaultValue="1250"
+            android:entries="@array/smallTalkInterval"
+            android:entryValues="@array/smallTalkIntervalValues"
+            android:key="smalltalk_interval"
+            android:title="Interval between dialogs"
+            android:summary="%s"/>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="smalltalk_fade"
+            android:title="Fade out dialogs" />
+        <ListPreference
+            android:defaultValue="500"
+            android:entries="@array/smallTalkFadeDelay"
+            android:entryValues="@array/smallTalkFadeDelayValues"
+            android:key="smalltalk_fade_delay"
+            android:title="Dialog fade out delay"
+            android:summary="%s"
+            android:dependency="smalltalk_fade"/>
+    </PreferenceCategory>
 </PreferenceScreen>

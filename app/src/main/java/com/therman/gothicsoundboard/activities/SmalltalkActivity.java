@@ -11,7 +11,6 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextSwitcher;
@@ -28,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -116,9 +116,9 @@ public class SmalltalkActivity extends AppCompatActivity {
     private class SmalltalkTopRunnable implements Runnable {
         @Override
         public void run() {
-            SystemClock.sleep(1000);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SmalltalkActivity.this);
+            SystemClock.sleep(Integer.parseInt(Objects.requireNonNull(preferences.getString("smalltalk_interval", "0"))));
             try {
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SmalltalkActivity.this);
                 Dialog dialog = getDialog(topQueue);
                 File filePath = new File(preferences.getString("directory", "") + File.separator + dialog.getFile());
                 if (!filePath.exists()) {
@@ -128,8 +128,13 @@ public class SmalltalkActivity extends AppCompatActivity {
                 player = new MediaPlayer();
                 tsSmalltalkTop.post(() -> tsSmalltalkTop.setText(dialog.getText()));
                 player.setOnCompletionListener(mediaPlayer -> {
+                    mediaPlayer.reset();
                     mediaPlayer.release();
                     threadHandler.post(new SmalltalkBottomRunnable());
+                    if(preferences.getBoolean("smalltalk_fade", true)){
+                        int sleep = Integer.parseInt(Objects.requireNonNull(preferences.getString("smalltalk_fade_delay", "0")));
+                        tsSmalltalkTop.postDelayed(() -> tsSmalltalkTop.setText(""), sleep);
+                    }
                 });
                 FileInputStream inputStream = new FileInputStream(filePath);
                 FileDescriptor fd = inputStream.getFD();
@@ -144,12 +149,11 @@ public class SmalltalkActivity extends AppCompatActivity {
     }
 
     private class SmalltalkBottomRunnable implements Runnable {
-
         @Override
         public void run() {
-            SystemClock.sleep(1000);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SmalltalkActivity.this);
+            SystemClock.sleep(Integer.parseInt(Objects.requireNonNull(preferences.getString("smalltalk_interval", "0"))));
             try {
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SmalltalkActivity.this);
                 Dialog dialog = getDialog(bottomQueue);
                 File filePath = new File(preferences.getString("directory", "") + File.separator + dialog.getFile());
                 if (!filePath.exists()) {
@@ -159,8 +163,13 @@ public class SmalltalkActivity extends AppCompatActivity {
                 player = new MediaPlayer();
                 tsSmalltalkBottom.post(() -> tsSmalltalkBottom.setText(dialog.getText()));
                 player.setOnCompletionListener(mediaPlayer -> {
+                    mediaPlayer.reset();
                     mediaPlayer.release();
                     threadHandler.post(new SmalltalkTopRunnable());
+                    if(preferences.getBoolean("smalltalk_fade", true)){
+                        int sleep = Integer.parseInt(Objects.requireNonNull(preferences.getString("smalltalk_fade_delay", "0")));
+                        tsSmalltalkBottom.postDelayed(() -> tsSmalltalkBottom.setText(""), sleep);
+                    }
                 });
                 FileInputStream inputStream = new FileInputStream(filePath);
                 FileDescriptor fd = inputStream.getFD();
