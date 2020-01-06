@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -76,10 +77,12 @@ public class SmalltalkActivity extends AppCompatActivity {
         try {
             AssetFileDescriptor afd = getAssets().openFd("void.mp3");
             silencePlayer = new MediaPlayer();
+            silencePlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             silencePlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+            afd.close();
             silencePlayer.setLooping(true);
-            silencePlayer.prepare();
-            silencePlayer.start();
+            silencePlayer.prepareAsync();
+            silencePlayer.setOnPreparedListener(MediaPlayer::start);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -89,7 +92,7 @@ public class SmalltalkActivity extends AppCompatActivity {
         if(!dialogQueue.isEmpty()) return dialogQueue.removeFirst();
         Random random = new Random();
         if(actors.isEmpty()) {
-            ArrayList<Integer> ints = IntStream.range(1, ACTORS).boxed().collect(Collectors.toCollection(ArrayList::new));
+            ArrayList<Integer> ints = IntStream.range(0, ACTORS).boxed().collect(Collectors.toCollection(ArrayList::new));
             while (!ints.isEmpty()) {
                 int pos = random.nextInt(ints.size());
                 actors.push(ints.get(pos));
@@ -110,6 +113,7 @@ public class SmalltalkActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         smalltalkThread.quitSafely();
+        silencePlayer.reset();
         silencePlayer.release();
     }
 
@@ -126,6 +130,7 @@ public class SmalltalkActivity extends AppCompatActivity {
                     return;
                 }
                 player = new MediaPlayer();
+                player.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 tsSmalltalkTop.post(() -> tsSmalltalkTop.setText(dialog.getText()));
                 player.setOnCompletionListener(mediaPlayer -> {
                     mediaPlayer.reset();
@@ -139,9 +144,9 @@ public class SmalltalkActivity extends AppCompatActivity {
                 FileInputStream inputStream = new FileInputStream(filePath);
                 FileDescriptor fd = inputStream.getFD();
                 player.setDataSource(fd);
+                inputStream.close();
                 player.prepareAsync();
                 player.setOnPreparedListener(MediaPlayer::start);
-                inputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -161,6 +166,7 @@ public class SmalltalkActivity extends AppCompatActivity {
                     return;
                 }
                 player = new MediaPlayer();
+                player.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 tsSmalltalkBottom.post(() -> tsSmalltalkBottom.setText(dialog.getText()));
                 player.setOnCompletionListener(mediaPlayer -> {
                     mediaPlayer.reset();
@@ -174,9 +180,9 @@ public class SmalltalkActivity extends AppCompatActivity {
                 FileInputStream inputStream = new FileInputStream(filePath);
                 FileDescriptor fd = inputStream.getFD();
                 player.setDataSource(fd);
+                inputStream.close();
                 player.prepareAsync();
                 player.setOnPreparedListener(MediaPlayer::start);
-                inputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
