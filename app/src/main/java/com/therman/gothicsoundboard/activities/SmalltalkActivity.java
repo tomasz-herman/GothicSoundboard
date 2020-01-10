@@ -125,21 +125,18 @@ public class SmalltalkActivity extends AppCompatActivity {
             try {
                 Dialog dialog = getDialog(topQueue);
                 File filePath = new File(preferences.getString("directory", "") + File.separator + dialog.getFile());
+                tsSmalltalkTop.post(() -> tsSmalltalkTop.setText(dialog.getText()));
                 if (!filePath.exists()) {
                     Toast.makeText(SmalltalkActivity.this, "Missing file: " + dialog.getFile(), Toast.LENGTH_SHORT).show();
+                    next(preferences, this);
                     return;
                 }
                 player = new MediaPlayer();
                 player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                tsSmalltalkTop.post(() -> tsSmalltalkTop.setText(dialog.getText()));
                 player.setOnCompletionListener(mediaPlayer -> {
                     mediaPlayer.reset();
                     mediaPlayer.release();
-                    threadHandler.post(new SmalltalkBottomRunnable());
-                    if(preferences.getBoolean("smalltalk_fade", true)){
-                        int sleep = Integer.parseInt(Objects.requireNonNull(preferences.getString("smalltalk_fade_delay", "0")));
-                        tsSmalltalkTop.postDelayed(() -> tsSmalltalkTop.setText(""), sleep);
-                    }
+                    next(preferences, new SmalltalkBottomRunnable());
                 });
                 FileInputStream inputStream = new FileInputStream(filePath);
                 FileDescriptor fd = inputStream.getFD();
@@ -149,6 +146,14 @@ public class SmalltalkActivity extends AppCompatActivity {
                 player.setOnPreparedListener(MediaPlayer::start);
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+
+        private void next(SharedPreferences preferences, Runnable runnable) {
+            threadHandler.post(runnable);
+            if(preferences.getBoolean("smalltalk_fade", true)){
+                int sleep = Integer.parseInt(Objects.requireNonNull(preferences.getString("smalltalk_fade_delay", "0")));
+                tsSmalltalkTop.postDelayed(() -> tsSmalltalkTop.setText(""), sleep);
             }
         }
     }
@@ -161,21 +166,18 @@ public class SmalltalkActivity extends AppCompatActivity {
             try {
                 Dialog dialog = getDialog(bottomQueue);
                 File filePath = new File(preferences.getString("directory", "") + File.separator + dialog.getFile());
+                tsSmalltalkBottom.post(() -> tsSmalltalkBottom.setText(dialog.getText()));
                 if (!filePath.exists()) {
                     Toast.makeText(SmalltalkActivity.this, "Missing file: " + dialog.getFile(), Toast.LENGTH_SHORT).show();
+                    next(preferences, this);
                     return;
                 }
                 player = new MediaPlayer();
                 player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                tsSmalltalkBottom.post(() -> tsSmalltalkBottom.setText(dialog.getText()));
                 player.setOnCompletionListener(mediaPlayer -> {
                     mediaPlayer.reset();
                     mediaPlayer.release();
-                    threadHandler.post(new SmalltalkTopRunnable());
-                    if(preferences.getBoolean("smalltalk_fade", true)){
-                        int sleep = Integer.parseInt(Objects.requireNonNull(preferences.getString("smalltalk_fade_delay", "0")));
-                        tsSmalltalkBottom.postDelayed(() -> tsSmalltalkBottom.setText(""), sleep);
-                    }
+                    next(preferences, new SmalltalkTopRunnable());
                 });
                 FileInputStream inputStream = new FileInputStream(filePath);
                 FileDescriptor fd = inputStream.getFD();
@@ -185,6 +187,14 @@ public class SmalltalkActivity extends AppCompatActivity {
                 player.setOnPreparedListener(MediaPlayer::start);
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+
+        private void next(SharedPreferences preferences, Runnable runnable) {
+            threadHandler.post(runnable);
+            if(preferences.getBoolean("smalltalk_fade", true)){
+                int sleep = Integer.parseInt(Objects.requireNonNull(preferences.getString("smalltalk_fade_delay", "0")));
+                tsSmalltalkBottom.postDelayed(() -> tsSmalltalkBottom.setText(""), sleep);
             }
         }
     }
